@@ -1,4 +1,4 @@
-fastapi
+fastapi[standard]
 uvicorn[standard]
 sqlalchemy
 cryptography
@@ -6,3 +6,5 @@ pymysql
 python-dotenv
 pydantic[email]
 bcrypt
+httpx
+pytest

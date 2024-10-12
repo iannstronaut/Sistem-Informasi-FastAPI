@@ -6,6 +6,8 @@ __pycache__/
 *.pyc
 *.pyo
 
+.pytest_cache/
+
 # Ignore virtual environment files
 venv/
 .env

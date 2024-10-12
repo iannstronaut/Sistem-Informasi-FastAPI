@@ -1,14 +1,14 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel, EmailStr
 from typing import Annotated
-from . import models
-from . import database
+from src import models
+from src.database import engine, SessionLocal
 from sqlalchemy.orm import Session
 import re
 import bcrypt
 
 app = FastAPI()
-models.Base.metadata.create_all(bind=database.engine)
+models.Base.metadata.create_all(bind=engine)
 
 class UserBase(BaseModel):
     username    : str
@@ -21,7 +21,7 @@ class ItemBase(BaseModel):
     user_id     :int
 
 def get_db():
-   db = database.SessionLocal()
+   db = SessionLocal()
    try:
        yield db
    finally:
@@ -98,15 +98,17 @@ async def update_user(user_id: int, user: UserBase, db: db_dependency):
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already in use.")
             if conflicting_user.email == user.email:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already in use.")
-
+        salt = bcrypt.gensalt()
         existing_user.username = user.username
         existing_user.email = user.email
-        existing_user.password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        existing_user.password = bcrypt.hashpw(user.password.encode('utf-8'), salt=salt).decode('utf-8')
         
         db.commit()
         db.refresh(existing_user)
         
-        return {"message": "User updated successfully", "user": existing_user}
+        return {"message": "User updated successfully",
+                "user": {"email"    : existing_user.email,
+                         "username" : existing_user.username}}
 
     except HTTPException as e:
         raise e
