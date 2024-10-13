@@ -8,3 +8,6 @@ pydantic[email]
 bcrypt
 httpx
 pytest
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
