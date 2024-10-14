@@ -6,8 +6,6 @@ from services.database import engine, Base
 def migration():
     try:
 
-        print("Debug - Registered tables: ", Base.metadata.tables)
-
         if not Base.metadata.tables:
             print("No tables found for migration.")
         else:
