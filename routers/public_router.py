@@ -55,7 +55,7 @@ async def login_user(user: UserLogin, db: db_dependency):
         if authenticate_user(user.password, existing_user.password) is False:
             return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Username atau Password Salah", headers={"WWW-Authenticate": "Bearer"})
         else:
-            access_token = create_access_token(data={"sub": existing_user.username})
+            access_token = create_access_token(data={"userId": existing_user.id})
 
             return {"access_token": access_token, "token_type": "bearer"}
     except HTTPException as e:
