@@ -17,7 +17,7 @@ class Token(BaseModel):
     token_type: str
 
 class TokenData(BaseModel):
-    username: str | None = None
+    userId: int | None = None
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -50,11 +50,12 @@ def create_access_token(data: dict):
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        username: str = payload.get("sub")
-        if username is None:
+        user_Id: int = payload.get("userId")
+        print("User_Id: ",user_Id)
+        if user_Id is None:
             return False
 
-        token_data = TokenData(username=username)
+        token_data = TokenData(userId=user_Id)
         return token_data
     except JWTError:
         return False
