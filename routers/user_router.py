@@ -1,13 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 import re
-import bcrypt
 from models.users_model import UserBase, User
 from services.database import db
 from typing import Annotated
 from services.auth import TokenData, get_current_user, get_password_hash, create_access_token
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", tags=["User Route"])
 
 db_dependency = Annotated[Session, Depends(db.get_db)]
 
@@ -22,7 +21,7 @@ async def get_user(db: db_dependency, current_user: TokenData = Depends(get_curr
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found", headers={"WWW-Authenticate": "Bearer"})
 
-        return {"user_id": user.id, "username": user.username, "email": user.email}
+        return {"user_id": user.id, "fullname": user.fullname ,"username": user.username, "email": user.email}
     except HTTPException as e:
         raise e
 
@@ -51,6 +50,7 @@ async def update_user(db: db_dependency, user: UserBase, current_user: TokenData
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already in use.")
 
         existing_user.username = user.username
+        existing_user.fullname = user.fullname
         existing_user.email = user.email
         existing_user.password = get_password_hash(user.password)
         
@@ -59,7 +59,8 @@ async def update_user(db: db_dependency, user: UserBase, current_user: TokenData
         
         return {"message": "User updated successfully",
                 "user": {"email"    : existing_user.email,
-                         "username" : existing_user.username}}
+                         "username" : existing_user.username,
+                         "fullname" : existing_user.fullname}}
 
     except HTTPException as e:
         raise e

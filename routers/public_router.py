@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 import re
-from models.users_model import UserBase, User
+from models.users_model import UserBase, User, UserLogin
 from services.database import db
 from typing import Annotated
-from services.auth import Token, UserLogin, get_password_hash, authenticate_user, create_access_token, get_current_user
+from services.auth import Token, get_password_hash, authenticate_user, create_access_token, get_current_user
 
 router = APIRouter()
 
@@ -33,9 +33,10 @@ async def user_create(user: UserBase, db: db_dependency):
         hashed_password = get_password_hash(user.password)
 
         new_user = User(
-            username=user.username,
-            email=user.email,
-            password=hashed_password
+            username    =user.username,
+            email       =user.email,
+            password    =hashed_password,
+            fullname    =user.fullname
         )
 
         db.add(new_user)
@@ -48,7 +49,7 @@ async def user_create(user: UserBase, db: db_dependency):
 @router.post('/login', status_code=status.HTTP_202_ACCEPTED, response_model=Token)
 async def login_user(user: UserLogin, db: db_dependency):
     try:
-        existing_user = db.query(User).filter(User.email == user.email).first()
+        existing_user = db.query(User).filter(User.username == user.username).first()
         if existing_user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Username atau Password Salah", headers={"WWW-Authenticate": "Bearer"})
         

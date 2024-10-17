@@ -1,6 +1,4 @@
 from fastapi import HTTPException
-from models.users_model import User
-from models.items_model import Item
 from services.database import engine, Base
     
 def migration():
@@ -17,7 +15,7 @@ def migration():
     except HTTPException as e:
         raise e
 
-class RunMigration:
+class Migration:
     @staticmethod
     def run():
         migration()
