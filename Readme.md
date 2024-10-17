@@ -1,6 +1,6 @@
 # Sistem Informasi FastAPI (REST API)
 
-Proyek ini adalah aplikasi web yang dibangun menggunakan FastAPI, yang menyediakan sistem informasi untuk mengelola pengguna dan item. Berikut adalah rincian penting yang perlu diketahui untuk memahami dan menjalankan proyek ini.
+Proyek ini adalah aplikasi web server yang dibangun menggunakan FastAPI, yang menyediakan sistem informasi untuk mengelola pengguna dan item. Berikut adalah rincian penting yang perlu diketahui untuk memahami dan menjalankan proyek ini.
 
 ## Struktur Folder
 
