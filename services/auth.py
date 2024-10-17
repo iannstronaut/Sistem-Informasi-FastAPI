@@ -19,12 +19,8 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     userId: int | None = None
 
-class UserLogin(BaseModel):
-    email: EmailStr
-    password: str
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -51,7 +47,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         user_Id: int = payload.get("userId")
-        print("User_Id: ",user_Id)
         if user_Id is None:
             return False
 

@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from models.migration import RunMigration
-from routers import api_router, public_router
+from services.migration import Migration
+from routers import user_router, public_router
 
 
 app = FastAPI()
-RunMigration.run()
+Migration.run()
 
-app.include_router(api_router.router)
+app.include_router(user_router.router)
 app.include_router(public_router.router)

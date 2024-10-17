@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
 from services.database import Base
 from pydantic import BaseModel
 
@@ -13,8 +12,7 @@ class Item(Base):
     user_id     = Column(Integer, ForeignKey("users.id"), nullable=False)
     createAt    = Column(DateTime, default=datetime.now(timezone.utc))
     updateAt    = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-
-    user = relationship("User", back_populates="items")
+    user_id     = Column(Integer, ForeignKey("users.id"))
 
 class ItemBase(BaseModel):
     title       : str
