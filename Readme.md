@@ -81,3 +81,6 @@ Sistem-Informasi-FastAPI/
   - POST **`/api/item/`**: Membuat item baru.
   - PUT **`/api/item/{item_id}`**: Memperbarui item berdasarkan ID.
   - DELETE **`/api/item/{item_id}`**: Menghapus item berdasarkan ID.
+
+## Kesimpulan
+Proyek Sistem Informasi FastAPI adalah Implementasi sederhana dari aplikasi web server yang dirancang untuk mengelola data pengguna dan item menggunakan framework FastAPI.
