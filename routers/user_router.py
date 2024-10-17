@@ -1,13 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 import re
-import bcrypt
 from models.users_model import UserBase, User
 from services.database import db
 from typing import Annotated
 from services.auth import TokenData, get_current_user, get_password_hash, create_access_token
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", tags=["User Route"])
 
 db_dependency = Annotated[Session, Depends(db.get_db)]
 

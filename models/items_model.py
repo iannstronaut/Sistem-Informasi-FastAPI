@@ -17,4 +17,3 @@ class Item(Base):
 class ItemBase(BaseModel):
     title       : str
     content     : str
-    user_id     : int
